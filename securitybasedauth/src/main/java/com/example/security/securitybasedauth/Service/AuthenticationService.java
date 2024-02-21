@@ -26,15 +26,22 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    public boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
     public AuthenticationResponse register(User req) {
 
         User user = new User();
+        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("User with this email already exists");
+        }
 
         user.setFirstName(req.getFirstName());
         user.setLastName(req.getLastName());
         user.setEmail(req.getEmail());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setRole(user.getRole());
+        user.setRoleid(req.getRoleid());
         userRepository.save(user);
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);

@@ -23,8 +23,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @ManyToOne
-    @JoinColumn(name = "roleId")
-    private Role role;
+    @JoinColumn(name = "role_id")
+    private Role roleid;
     private boolean isActive = true;
 
     public Long getId() {
@@ -67,14 +67,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public boolean isActive() {
         return isActive;
     }
@@ -85,37 +77,41 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+
+        return List.of(new SimpleGrantedAuthority(roleid.getName()));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public Role getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(Role roleid) {
+        this.roleid = roleid;
     }
 
 }

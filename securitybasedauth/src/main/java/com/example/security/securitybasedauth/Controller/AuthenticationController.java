@@ -19,7 +19,18 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> regUser(@RequestBody User user) {
-        return ResponseEntity.ok(authenticationService.register(user));
+        try {
+            if (authenticationService.emailExists(user.getEmail())) {
+                return ResponseEntity.badRequest()
+                    .body(new AuthenticationResponse("User with this email already exists"));
+            }
+    
+            AuthenticationResponse registrationResponse = authenticationService.register(user);
+            return ResponseEntity.ok(registrationResponse);
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.badRequest()
+                .body(new AuthenticationResponse("User with this email already exists"));
+        }
     }
 
     @PostMapping("/login")
@@ -27,3 +38,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
+
+
+/*
+ * 
+ * 
+ * 
+
+ */
