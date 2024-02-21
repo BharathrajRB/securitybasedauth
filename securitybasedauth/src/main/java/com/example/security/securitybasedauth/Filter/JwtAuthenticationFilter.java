@@ -1,14 +1,11 @@
 package com.example.security.securitybasedauth.Filter;
 
 import java.io.IOException;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,16 +20,15 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public JwtAuthenticationFilter(JwtService jwtservice, UserDetailsImpl userDetailsService) {
+        this.jwtservice = jwtservice;
+        this.userDetailsService = userDetailsService;
+    }
+
     private final JwtService jwtservice;
     private final UserDetailsImpl userDetailsService;
 
-    // public JwtAuthenticationFilter(UserDetails userDetails) {
-    // this.userDetails = userDetails;
-    // }
-
-    // public JwtAuthenticationFilter(JwtService jwtservice) {
-    // this.jwtservice = jwtservice;
-    // }
+ 
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -49,7 +45,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String userName = jwtservice.extractUsername(token);
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            if (jwtservice.isValid(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
         }
+        filterChain.doFilter(request, response);
     }
 
 }
