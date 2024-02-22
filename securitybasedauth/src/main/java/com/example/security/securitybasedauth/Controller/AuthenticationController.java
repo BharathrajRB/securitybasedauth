@@ -38,11 +38,3 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
-
-
-/*
- * 
- * 
- * 
-
- */

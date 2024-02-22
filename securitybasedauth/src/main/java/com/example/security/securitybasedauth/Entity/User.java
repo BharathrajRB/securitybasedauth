@@ -1,6 +1,5 @@
 package com.example.security.securitybasedauth.Entity;
 
-import java.util.Collection;
 import java.util.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -77,7 +76,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
+        
         return List.of(new SimpleGrantedAuthority(roleid.getName()));
     }
 

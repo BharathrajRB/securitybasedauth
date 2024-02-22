@@ -20,6 +20,7 @@ import com.example.security.securitybasedauth.Service.UserDetailsImpl;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
     private final UserDetailsImpl userDetailsimpl;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -31,8 +32,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req.requestMatchers("/login/**", "/register/**").permitAll().anyRequest()
-                        .authenticated())
+                .authorizeHttpRequests(
+                        req -> req.requestMatchers("/login/**", "/register/**").permitAll()
+                                .requestMatchers("/admin/**")
+                                .hasAuthority("admin")
+
+                                .anyRequest()
+                                .authenticated())
                 .userDetailsService(userDetailsimpl)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
@@ -49,5 +55,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
 
 }
