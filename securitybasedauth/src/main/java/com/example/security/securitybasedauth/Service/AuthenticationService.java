@@ -1,6 +1,7 @@
 package com.example.security.securitybasedauth.Service;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,23 +46,28 @@ public class AuthenticationService {
             userRepository.save(user);
             String token = jwtService.generateToken(user);
 
-            // Registration successful
             return new AuthenticationResponse(token, "User registration was successful");
 
         } catch (UserAlreadyExistsException e) {
-            // Registration failed
             return new AuthenticationResponse(null, "User already exists");
         }
     }
 
     public AuthenticationResponse authenticate(User request) {
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        User user = userRepository.findByEmail(request.getUsername()).orElseThrow();
+            User user = userRepository.findByEmail(request.getUsername()).orElseThrow();
+            String token = jwtService.generateToken(user);
 
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token,"mess");
+            // Authentication successful
+            return new AuthenticationResponse(token, "User authenticated successfully");
+
+        } catch (BadCredentialsException e) {
+            // Authentication failed
+            return new AuthenticationResponse(null, "Invalid email or password");
+        }
     }
 
 }
