@@ -19,17 +19,11 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> regUser(@RequestBody User user) {
-        try {
-            if (authenticationService.emailExists(user.getEmail())) {
-                return ResponseEntity.badRequest()
-                    .body(new AuthenticationResponse("User with this email already exists"));
-            }
-    
-            AuthenticationResponse registrationResponse = authenticationService.register(user);
-            return ResponseEntity.ok(registrationResponse);
-        } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.badRequest()
-                .body(new AuthenticationResponse("User with this email already exists"));
+        AuthenticationResponse response = authenticationService.register(user);
+        if (response.getToken() != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
         }
     }
 

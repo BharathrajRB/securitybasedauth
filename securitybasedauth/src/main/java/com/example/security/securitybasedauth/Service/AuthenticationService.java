@@ -31,21 +31,27 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(User req) {
+        try {
+            User user = new User();
+            if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+                throw new UserAlreadyExistsException("User with this email already exists");
+            }
 
-        User user = new User();
-        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("User with this email already exists");
+            user.setFirstName(req.getFirstName());
+            user.setLastName(req.getLastName());
+            user.setEmail(req.getEmail());
+            user.setPassword(passwordEncoder.encode(req.getPassword()));
+            user.setRoleid(req.getRoleid());
+            userRepository.save(user);
+            String token = jwtService.generateToken(user);
+
+            // Registration successful
+            return new AuthenticationResponse(token, "User registration was successful");
+
+        } catch (UserAlreadyExistsException e) {
+            // Registration failed
+            return new AuthenticationResponse(null, "User already exists");
         }
-
-        user.setFirstName(req.getFirstName());
-        user.setLastName(req.getLastName());
-        user.setEmail(req.getEmail());
-        user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setRoleid(req.getRoleid());
-        userRepository.save(user);
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
-
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -55,7 +61,7 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(request.getUsername()).orElseThrow();
 
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token,"mess");
     }
 
 }
