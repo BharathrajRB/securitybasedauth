@@ -61,11 +61,10 @@ public class AuthenticationService {
             User user = userRepository.findByEmail(request.getUsername()).orElseThrow();
             String token = jwtService.generateToken(user);
 
-            // Authentication successful
             return new AuthenticationResponse(token, "User authenticated successfully");
 
         } catch (BadCredentialsException e) {
-            // Authentication failed
+            
             return new AuthenticationResponse(null, "Invalid email or password");
         }
     }
