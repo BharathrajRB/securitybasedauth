@@ -20,7 +20,6 @@ import com.example.security.securitybasedauth.Service.UserDetailsImpl;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     private final UserDetailsImpl userDetailsimpl;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -36,7 +35,7 @@ public class SecurityConfig {
                         req -> req.requestMatchers("/login/**", "/register/**").permitAll()
                                 .requestMatchers("/products/**")
                                 .hasAuthority("admin")
-
+                                .requestMatchers("/getAllProducts").permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .userDetailsService(userDetailsimpl)
@@ -55,6 +54,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 
 }

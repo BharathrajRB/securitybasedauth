@@ -1,5 +1,6 @@
 package com.example.security.securitybasedauth.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,28 @@ public class ProductService {
         }
     }
 
-    // public ResponseEntity<?> deleteProduct(Long id) {
+    public ResponseEntity<?> deleteProduct(Long productId) {
+        Optional<Product> existingProduct = productRepository.findById(productId);
+        if (existingProduct.isPresent()) {
+            productRepository.deleteById(productId);
+            return new ResponseEntity<>("successfully deleted", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("failed to find product", HttpStatus.NOT_FOUND);
+        }
 
+    }
+
+    public List<Product> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products;
+    }
+
+    // public Product getProductById(Long productId) {
+    //     Optional<Product> product = productRepository.findById(productId);
+    //     if (product.isPresent()) {
+    //         Product productFound= product.get();
+    //         return productFound;
+    //     }
     // }
 
 }
