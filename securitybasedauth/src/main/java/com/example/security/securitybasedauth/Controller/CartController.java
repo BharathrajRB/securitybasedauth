@@ -36,4 +36,16 @@ public class CartController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<String> checkout(@RequestHeader("Authorization") String authHeader,
+            @RequestParam("paymentMethodId") int paymentMethodId,
+            @RequestParam("shippingAddress") String shippingAddress) {
+        try {
+            return cartService.checkout(authHeader, paymentMethodId, shippingAddress);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

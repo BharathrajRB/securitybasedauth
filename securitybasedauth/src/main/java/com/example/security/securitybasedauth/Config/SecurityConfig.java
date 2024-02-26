@@ -35,7 +35,7 @@ public class SecurityConfig {
                         req -> req.requestMatchers("/login/**", "/register/**").permitAll()
                                 .requestMatchers("/products/**")
                                 .hasAuthority("admin")
-                                .requestMatchers("/getAllProducts/**", "/add-cart/**").permitAll()
+                                .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .userDetailsService(userDetailsimpl)
