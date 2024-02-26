@@ -46,6 +46,7 @@ public class ProductController {
     @PutMapping("/{productId}")
     public ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
         try {
+
             return productService.updateProduct(productId, product);
         } catch (Exception e) {
             return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,4 +62,7 @@ public class ProductController {
             return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    
+
 }

@@ -64,7 +64,7 @@ public class AuthenticationService {
             return new AuthenticationResponse(token, "User authenticated successfully");
 
         } catch (BadCredentialsException e) {
-            
+
             return new AuthenticationResponse(null, "Invalid email or password");
         }
     }
