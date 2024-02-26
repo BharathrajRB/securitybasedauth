@@ -1,5 +1,7 @@
 package com.example.security.securitybasedauth.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,8 +19,12 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
     private int quantity;
-    @ManyToOne
+    // @ManyToOne
+    // @JoinColumn(name = "user_id")
+    // private User user;
+        @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
     public Long getId() {
         return id;

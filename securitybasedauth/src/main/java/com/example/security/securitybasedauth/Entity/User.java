@@ -5,12 +5,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User implements UserDetails {
@@ -25,6 +29,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role roleid;
     private boolean isActive = true;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<CartItem> cartItem;
+
 
     public Long getId() {
         return Id;
@@ -111,6 +120,14 @@ public class User implements UserDetails {
 
     public void setRoleid(Role roleid) {
         this.roleid = roleid;
+    }
+
+    public List<CartItem> getCartItem() {
+        return cartItem;
+    }
+
+    public void setCartItem(List<CartItem> cartItem) {
+        this.cartItem = cartItem;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.example.security.securitybasedauth.Service;
 
-import java.util.Optional;
-
+import java.math.BigDecimal;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -177,6 +177,39 @@ public class CartService {
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<?> viewCart(String authHeader) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String email = jwtService.extractUsername(token);
+            Optional<User> optionalUser = userRepository.findByEmail(email);
+
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                List<CartItem> cart = user.getCartItem();
+                if (cart.isEmpty()) {
+                    return new ResponseEntity<>("cart is empty", HttpStatus.BAD_REQUEST);
+
+                } else {
+                    BigDecimal totalPrice = cart.stream()
+                            .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("totalPrice", totalPrice);
+                    response.put("cartItems", cart);
+
+                    return new ResponseEntity<>(response, HttpStatus.OK);
+
+                }
+
+            } else {
+                return new ResponseEntity<>("User with email not found", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
