@@ -151,7 +151,7 @@ public class CartService {
                                 if (cartItem.getQuantity() <= 0) {
                                     cartItemRepository.delete(cartItem);
                                     return new ResponseEntity<>(
-                                            "Decreased the quantity and removed the item from the cart", HttpStatus.OK);
+                                            "removed the item from the cart", HttpStatus.OK);
                                 }
                                 cartItemRepository.save(cartItem);
                                 return new ResponseEntity<>("Decreased the quantity of the cart", HttpStatus.OK);

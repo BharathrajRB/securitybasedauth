@@ -29,8 +29,7 @@ public class CartController {
     // }
 
     @PostMapping("/add-cart/{productId}")
-    public ResponseEntity<?> addToCart(
-            @RequestHeader("Authorization") String authHeader,
+    public ResponseEntity<?> addToCart(@RequestHeader("Authorization") String authHeader,
             @PathVariable Long productId,
             @RequestParam int quantity) {
         try {
@@ -40,5 +39,4 @@ public class CartController {
         }
     }
 
-    // Other cart-related endpoints can be added here
 }
