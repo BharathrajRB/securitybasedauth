@@ -5,7 +5,6 @@ public class AuthenticationResponse {
     private String token;
     private String message;
 
-    // Constructors, getters, and setters...
 
     public AuthenticationResponse(String token, String message) {
         this.token = token;

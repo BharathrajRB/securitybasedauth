@@ -22,7 +22,7 @@ public class CartItem {
     // @ManyToOne
     // @JoinColumn(name = "user_id")
     // private User user;
-        @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
