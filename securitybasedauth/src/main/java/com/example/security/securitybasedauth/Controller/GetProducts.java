@@ -26,7 +26,6 @@ public class GetProducts {
     // @GetMapping("/{productId}")
     // public Product getProductById(@PathVariable Long productId) {
     // return productservice.getProductById(productId);
-
     // }
 
     @GetMapping("/byCategory/{categoryName}")
@@ -34,4 +33,5 @@ public class GetProducts {
         List<Product> products = productservice.getProductsByCategory(categoryName);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+    
 }

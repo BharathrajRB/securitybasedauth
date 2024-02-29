@@ -1,5 +1,6 @@
 package com.example.security.securitybasedauth.Service;
 
+import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +38,6 @@ public class AuthenticationService {
             if (userRepository.findByEmail(req.getEmail()).isPresent()) {
                 throw new UserAlreadyExistsException("User with this email already exists");
             }
-
             user.setFirstName(req.getFirstName());
             user.setLastName(req.getLastName());
             user.setEmail(req.getEmail());

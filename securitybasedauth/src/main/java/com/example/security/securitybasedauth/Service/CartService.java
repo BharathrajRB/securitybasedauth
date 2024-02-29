@@ -143,23 +143,20 @@ public class CartService {
                     return new ResponseEntity<>("Cart is empty", HttpStatus.BAD_REQUEST);
                 }
 
-                // Calculate total price
                 BigDecimal totalPrice = cartItems.stream()
                         .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-                // Create Order entity
                 Orders order = new Orders();
                 order.setUser(user);
                 order.setTotalPrice(totalPrice);
                 order.setPaymentMethod(paymentMethodRepository.getById(paymentMethodId));
-                // order.setOrderDate();
+             
                 order.setOrderDate(new Timestamp(System.currentTimeMillis()));
                 order.setShippingAddress(shippingAddress);
 
                 orderRepository.save(order);
 
-                // Create OrderItem entities and update product stock
                 List<OrderItem> orderItems = new ArrayList<>();
                 for (CartItem cartItem : cartItems) {
                     if (cartItem.getQuantity() > cartItem.getProduct().getAvailableStock()) {
@@ -178,10 +175,8 @@ public class CartService {
                     orderItems.add(orderItem);
                 }
 
-                // Save OrderItem entities
                 orderItemRepository.saveAll(orderItems);
 
-                // Clear the cart after successful checkout
                 cartItemRepository.deleteAll(cartItems);
 
                 return new ResponseEntity<>("Checkout successful", HttpStatus.OK);

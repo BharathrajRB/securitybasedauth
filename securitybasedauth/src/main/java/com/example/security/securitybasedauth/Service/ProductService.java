@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.security.securitybasedauth.Controller.UnAuthorizeException;
@@ -58,7 +57,7 @@ public class ProductService {
             updateProduct.setActive(product.isActive());
             productRepository.save(updateProduct);
             return new ResponseEntity<>("successfully updated ", HttpStatus.OK);
-
+ 
         } else {
             return new ResponseEntity<>("product is not found with id ", HttpStatus.NOT_FOUND);
         }
