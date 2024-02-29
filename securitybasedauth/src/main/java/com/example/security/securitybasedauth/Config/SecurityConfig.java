@@ -23,26 +23,35 @@ public class SecurityConfig {
     private final UserDetailsImpl userDetailsimpl;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(UserDetailsImpl userDetailsimpl, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    public SecurityConfig(UserDetailsImpl userDetailsimpl, JwtAuthenticationFilter jwtAuthenticationFilter,
+            CustomAccessDeniedHandler customDeniedHandler) {
         this.userDetailsimpl = userDetailsimpl;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customAccessDeniedHandler = customDeniedHandler;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        req -> req.requestMatchers("/login/**", "/register/**").permitAll()
-                                .requestMatchers("/products/**")
-                                .hasAuthority("admin")
-                                .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
-                                .anyRequest()
-                                .authenticated())
-                .userDetailsService(userDetailsimpl)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
-
+        httpSecurity
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeRequests(authorizeRequests ->
+                authorizeRequests
+               //     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .requestMatchers("/login/**", "/register/**").permitAll()
+                    .requestMatchers("/products/**").hasAuthority("admin")
+                    .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .userDetailsService(userDetailsimpl)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler);
+    
+        return httpSecurity.build();
     }
+    
 
     @Bean
     public PasswordEncoder passwordEncoder() {
