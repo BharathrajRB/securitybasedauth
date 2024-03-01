@@ -19,7 +19,7 @@ import com.example.security.securitybasedauth.Service.UserDetailsImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    
     private final UserDetailsImpl userDetailsimpl;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
