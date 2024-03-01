@@ -79,13 +79,7 @@ public class ProductService {
         return products;
     }
 
-    // public Product getProductById(Long productId) {
-    // Optional<Product> product = productRepository.findById(productId);
-    // if (product.isPresent()) {
-    // Product productFound= product.get();
-    // return productFound;
-    // }
-    // }
+   
 
     public Product getProductById(Long id) {
         try {

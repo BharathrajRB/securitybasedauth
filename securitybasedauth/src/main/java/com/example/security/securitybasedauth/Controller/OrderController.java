@@ -73,3 +73,25 @@ public class OrderController {
     }
 
 }
+/*
+ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+        // Check if the user has the "ROLE_ADMIN" authority
+        boolean isAdmin = authorities.stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        // Set the appropriate response message
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        if (isAdmin) {
+            response.getWriter().write("Access denied. Admins only!");
+        } else {
+            response.getWriter().write("Access denied. You don't have permission to access this resource.");
+        }
+    }
+}
+ */
