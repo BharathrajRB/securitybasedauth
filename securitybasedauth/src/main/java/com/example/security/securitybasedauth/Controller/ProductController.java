@@ -26,16 +26,7 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    // @PostMapping("/products")
-    // public ResponseEntity<String> createProduct(@RequestBody Product product) {
-    // try {
-
-    // return productService.createProduct(product).ok("success");
-    // } catch (UnAuthorizeException e) {
-    // return new ResponseEntity<String>("UnAuthorized", HttpStatus.UNAUTHORIZED);
-    // }
-
-    // }
+   
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody Product product) {

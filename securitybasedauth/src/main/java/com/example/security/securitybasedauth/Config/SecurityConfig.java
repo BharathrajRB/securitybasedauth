@@ -31,27 +31,25 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.customAccessDeniedHandler = customDeniedHandler;
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeRequests(authorizeRequests ->
-                authorizeRequests
-               //     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers("/login/**", "/register/**").permitAll()
-                    .requestMatchers("/products/**").hasAuthority("admin")
-                    .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
-                    .anyRequest().authenticated()
-            )
-            .userDetailsService(userDetailsimpl)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        // .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/login/**", "/register/**").permitAll()
+                        .requestMatchers("/products/**").hasAuthority("admin")
+                        .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
+                        .anyRequest().authenticated())
+                .userDetailsService(userDetailsimpl)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler);
-    
+
         return httpSecurity.build();
     }
-    
 
     @Bean
     public PasswordEncoder passwordEncoder() {
