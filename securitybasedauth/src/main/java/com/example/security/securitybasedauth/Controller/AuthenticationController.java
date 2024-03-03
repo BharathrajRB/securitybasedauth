@@ -17,10 +17,6 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
-
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> regUser(@RequestBody User user) {
         AuthenticationResponse response = authenticationService.register(user);
