@@ -19,10 +19,9 @@ public class CartController {
 
     @PostMapping("/add-cart/{productId}")
     public ResponseEntity<?> addToCart(@RequestHeader("Authorization") String authHeader,
-            @PathVariable Long productId,
-            @RequestParam int quantity) {
+            @RequestBody CartRequestDTO cartRequestDTO) {
         try {
-            return cartService.addToCart(productId, quantity, authHeader);
+            return cartService.addToCart(cartRequestDTO.getProductId(), cartRequestDTO.getQuantity(), authHeader);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

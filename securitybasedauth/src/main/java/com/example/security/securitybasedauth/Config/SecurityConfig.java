@@ -32,7 +32,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        // .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+
                         .requestMatchers("/users/login/**", "/users/register/**").permitAll()
                         .requestMatchers("/products/**").hasAuthority("admin")
                         .requestMatchers("/getAllProducts/**", "/get-products").permitAll()
