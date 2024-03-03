@@ -1,6 +1,8 @@
 package com.example.security.securitybasedauth.Filter;
 
 import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,13 +22,10 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public JwtAuthenticationFilter(JwtService jwtservice, UserDetailsImpl userDetailsService) {
-        this.jwtservice = jwtservice;
-        this.userDetailsService = userDetailsService;
-    }
-
-    private final JwtService jwtservice;
-    private final UserDetailsImpl userDetailsService;
+    @Autowired
+    private JwtService jwtservice;
+    @Autowired
+    private UserDetailsImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,

@@ -1,5 +1,6 @@
 package com.example.security.securitybasedauth.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,39 +20,32 @@ import com.example.security.securitybasedauth.Service.UserDetailsImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private UserDetailsImpl userDetailsimpl;
+    @Autowired
 
-    private final UserDetailsImpl userDetailsimpl;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    public SecurityConfig(UserDetailsImpl userDetailsimpl, JwtAuthenticationFilter jwtAuthenticationFilter,
-            CustomAccessDeniedHandler customDeniedHandler) {
-        this.userDetailsimpl = userDetailsimpl;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.customAccessDeniedHandler = customDeniedHandler;
-    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeRequests(authorizeRequests ->
-                authorizeRequests
-               //     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers("/login/**", "/register/**").permitAll()
-                    .requestMatchers("/products/**").hasAuthority("admin")
-                    .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
-                    .anyRequest().authenticated()
-            )
-            .userDetailsService(userDetailsimpl)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+
+                        .requestMatchers("/login/**", "/register/**").permitAll()
+                        .requestMatchers("/products/**").hasAuthority("admin")
+                        .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
+                        .anyRequest().authenticated())
+                .userDetailsService(userDetailsimpl)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler);
-    
+
         return httpSecurity.build();
     }
-    
 
     @Bean
     public PasswordEncoder passwordEncoder() {
