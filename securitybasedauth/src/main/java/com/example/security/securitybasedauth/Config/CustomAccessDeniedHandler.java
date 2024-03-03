@@ -17,7 +17,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex)
             throws IOException, ServletException {
 
-     
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write("Access denied for this resource.");
     }
