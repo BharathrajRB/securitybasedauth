@@ -23,7 +23,6 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsImpl userDetailsimpl;
     @Autowired
-
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -33,10 +32,10 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-
-                        .requestMatchers("/login/**", "/register/**").permitAll()
+                        // .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/users/login/**", "/users/register/**").permitAll()
                         .requestMatchers("/products/**").hasAuthority("admin")
-                        .requestMatchers("/getAllProducts/**", "/add-cart/**", "/").permitAll()
+                        .requestMatchers("/getAllProducts/**", "/get-products").permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsimpl)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

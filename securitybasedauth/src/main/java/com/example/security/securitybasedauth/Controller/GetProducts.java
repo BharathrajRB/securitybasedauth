@@ -23,15 +23,15 @@ public class GetProducts {
         return productservice.getAllProducts();
     }
 
-    // @GetMapping("/{productId}")
-    // public Product getProductById(@PathVariable Long productId) {
-    // return productservice.getProductById(productId);
-    // }
+    @GetMapping("/{productId}")
+    public Product getProductById(@PathVariable Long productId) {
+        return productservice.getProductById(productId);
+    }
 
     @GetMapping("/byCategory/{categoryName}")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String categoryName) {
         List<Product> products = productservice.getProductsByCategory(categoryName);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
-    
+
 }

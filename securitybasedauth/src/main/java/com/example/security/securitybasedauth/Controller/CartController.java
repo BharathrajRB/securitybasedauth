@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class CartController {
         }
     }
 
-    @GetMapping("/view")
+    @GetMapping("/cart")
     public ResponseEntity<?> viewCart(@RequestHeader("Authorization") String authHeader) {
         try {
             return cartService.viewCart(authHeader);
@@ -38,10 +39,10 @@ public class CartController {
 
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@RequestHeader("Authorization") String authHeader,
-            @RequestParam("paymentMethodId") int paymentMethodId,
-            @RequestParam("shippingAddress") String shippingAddress) {
+            @RequestBody CheckoutRequestDTO checkoutRequest) {
         try {
-            return cartService.checkout(authHeader, paymentMethodId, shippingAddress);
+            return cartService.checkout(authHeader, checkoutRequest.getPaymentMethodId(),
+                    checkoutRequest.getShippingAddress());
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

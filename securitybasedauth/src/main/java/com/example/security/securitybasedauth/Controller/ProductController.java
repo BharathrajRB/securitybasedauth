@@ -23,19 +23,6 @@ import com.example.security.securitybasedauth.Service.ProductService;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired
-    private ProductRepository productRepository;
-
-    // @PostMapping("/products")
-    // public ResponseEntity<String> createProduct(@RequestBody Product product) {
-    // try {
-
-    // return productService.createProduct(product).ok("success");
-    // } catch (UnAuthorizeException e) {
-    // return new ResponseEntity<String>("UnAuthorized", HttpStatus.UNAUTHORIZED);
-    // }
-
-    // }
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody Product product) {
@@ -65,7 +52,5 @@ public class ProductController {
             return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-  
 
 }
