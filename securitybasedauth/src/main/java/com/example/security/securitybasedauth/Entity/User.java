@@ -29,11 +29,10 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role roleid;
     private boolean isActive = true;
-    
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<CartItem> cartItem;
-
 
     public Long getId() {
         return Id;
@@ -85,7 +84,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        
+
         return List.of(new SimpleGrantedAuthority(roleid.getName()));
     }
 

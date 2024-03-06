@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.security.securitybasedauth.Dto.CartRequestDTO;
 import com.example.security.securitybasedauth.Service.CartService;
 
 @RestController
@@ -17,7 +19,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/add-cart/{productId}")
+    @PostMapping("/add-cart")
     public ResponseEntity<?> addToCart(@RequestHeader("Authorization") String authHeader,
             @RequestBody CartRequestDTO cartRequestDTO) {
         try {

@@ -1,4 +1,4 @@
-package com.example.security.securitybasedauth.Controller;
+package com.example.security.securitybasedauth.Dto;
 
 public class CartRequestDTO {
 
