@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -57,7 +60,7 @@ public class ProductService {
             updateProduct.setActive(product.isActive());
             productRepository.save(updateProduct);
             return new ResponseEntity<>("successfully updated ", HttpStatus.OK);
- 
+
         } else {
             return new ResponseEntity<>("product is not found with id ", HttpStatus.NOT_FOUND);
         }
@@ -99,5 +102,10 @@ public class ProductService {
 
     public List<Product> getProductsByCategory(String categoryName) {
         return productRepository.findByCategoryid_Name(categoryName);
+
+    }
+
+    public Page<Product> getAllProducts(int page, int size, String sortBy) {
+        return productRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
     }
 }

@@ -25,6 +25,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         boolean isAdmin = authorities.stream().anyMatch(a -> a.getAuthority().equals("admin"));
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         if (isAdmin) {
+
             response.getWriter().write(" Admins ");
         } else {
             response.getWriter().write("Access denied. You don't have permission to access this resource.");
