@@ -3,6 +3,7 @@ package com.example.security.securitybasedauth.Controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.security.securitybasedauth.Dto.OrderDTO;
 import com.example.security.securitybasedauth.Dto.OrderDetailsDTO;
+import com.example.security.securitybasedauth.Entity.Orders;
 import com.example.security.securitybasedauth.Entity.User;
+import com.example.security.securitybasedauth.Repository.OrderRepository;
 import com.example.security.securitybasedauth.Repository.UserRepository;
 import com.example.security.securitybasedauth.Service.JwtService;
 import com.example.security.securitybasedauth.Service.OrderService;
@@ -23,7 +26,8 @@ import com.example.security.securitybasedauth.Service.OrderService;
 public class OrderController {
     @Autowired
     private JwtService jwtService;
-
+    @Autowired
+    private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -70,6 +74,19 @@ public class OrderController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/different-categories")
+    public ResponseEntity<List<Long>> getOrderIdsWithProductsInDifferentCategories() {
+        List<Long> orderIds = orderRepository.findOrderIdsWithProductsInDifferentCategories();
+        return ResponseEntity.ok(orderIds);
+    }
+
+
+
+    @GetMapping("/different-criteria")
+    public List<Long> findOrdersWithDifferentCategories() {
+        return orderService.findOrderIdsWithProductsInDifferentCategoriescri();
     }
 
 }

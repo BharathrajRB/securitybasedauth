@@ -16,12 +16,16 @@ import com.example.security.securitybasedauth.Entity.OrderItem;
 import com.example.security.securitybasedauth.Entity.Orders;
 import com.example.security.securitybasedauth.Entity.User;
 import com.example.security.securitybasedauth.Repository.OrderRepository;
+import com.example.security.securitybasedauth.Repository.OrderRepositoryCustom;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderRepositoryCustom orderRepositoryCustom;
 
     public List<OrderDTO> getOrderHistory(User user) {
 
@@ -76,6 +80,14 @@ public class OrderService {
         orderDetailsDTO.setShippingAddress(order.getShippingAddress());
         orderDetailsDTO.setTotalAmount(order.getTotalPrice());
         return orderDetailsDTO;
+    }
+
+    // public List<Long> findOrderIdsWithProductsInDifferentCategoriescri() {
+    //     return orderRepositoryCustom.findOrderIdsWithProductsInDifferentCategoriesCriteria();
+    // }
+
+    public List<Long> findOrderIdsWithProductsInDifferentCategoriescri() {
+        return orderRepositoryCustom.findOrderIdsWithProductsInDifferentCategoriescri();
     }
 
 }

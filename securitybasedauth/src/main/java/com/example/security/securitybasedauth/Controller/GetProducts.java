@@ -34,4 +34,15 @@ public class GetProducts {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("/total-quantity")
+    public ResponseEntity<List<Object[]>> getTotalQuantityPerProduct() {
+        List<Object[]> result = productservice.getTotalQuantityPerProduct();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/total-cri")
+    public ResponseEntity<List<Object[]>> getTotalQuantityPerProductcri() {
+        List<Object[]> result = productservice.getTotalQuantityPerProductcri();
+        return ResponseEntity.ok(result);
+    }
 }

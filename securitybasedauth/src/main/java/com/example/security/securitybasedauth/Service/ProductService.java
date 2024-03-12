@@ -108,4 +108,12 @@ public class ProductService {
     public Page<Product> getAllProducts(int page, int size, String sortBy) {
         return productRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
     }
+
+    public List<Object[]> getTotalQuantityPerProduct() {
+        return productRepository.getTotalQuantityPerProduct();
+    }
+
+    public List<Object[]> getTotalQuantityPerProductcri() {
+        return productRepository.getTotalQuantityPerProduct();
+    }
 }
