@@ -39,10 +39,13 @@ public class GetProducts {
         List<Object[]> result = productservice.getTotalQuantityPerProduct();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-/*
- *  SELECT product.name AS product_name, SUM(order_item.quantity) AS total_quantity FROM product JOIN
- *  order_item ON order_item.product_id = product.id GROUP BY product_name ORDER BY product_name
- */
+
+    /*
+     * SELECT product.name AS product_name, SUM(order_item.quantity) AS
+     * total_quantity FROM product JOIN
+     * order_item ON order_item.product_id = product.id GROUP BY product_name ORDER
+     * BY product_name
+     */
     @GetMapping("/total-cri")
     public ResponseEntity<List<Object[]>> getTotalQuantityPerProductcri() {
         List<Object[]> result = productservice.getTotalQuantityPerProductcri();

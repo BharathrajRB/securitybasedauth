@@ -95,4 +95,5 @@ public class OrderController {
     public List<Object[]> getCategoryTotalPricescri() {
         return orderService.getCategoryTotalPrices();
     }
+
 }
