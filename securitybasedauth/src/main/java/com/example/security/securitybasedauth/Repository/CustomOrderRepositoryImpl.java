@@ -28,6 +28,7 @@ public class CustomOrderRepositoryImpl implements OrderRepositoryCustom {
     private final EntityManager entityManager;
 
     /*
+     * 
      * "SELECT order_id, COUNT(DISTINCT product.category_id) AS count " +
      * "FROM order_item " +
      * "JOIN product ON order_item.product_id = product.id " +
@@ -55,5 +56,21 @@ public class CustomOrderRepositoryImpl implements OrderRepositoryCustom {
 
         return entityManager.createQuery(query).getResultList();
 
+    }
+
+    @Override
+    public List<Object[]> getCategoryTotalPricescri() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<OrderItem> orderItemRoot = query.from(OrderItem.class);
+        Join<OrderItem, Product> productJoin = orderItemRoot.join("product");
+        Join<Product, Category> categoryJoin = productJoin.join("category");
+
+        query.multiselect(categoryJoin.get("name"),
+                cb.sum(cb.prod(orderItemRoot.get("price"), orderItemRoot.get("quantity"))));
+
+        query.groupBy(categoryJoin.get("name"));
+
+        return entityManager.createQuery(query).getResultList();
     }
 }

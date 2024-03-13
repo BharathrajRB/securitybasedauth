@@ -82,11 +82,17 @@ public class OrderController {
         return ResponseEntity.ok(orderIds);
     }
 
-
-
     @GetMapping("/different-criteria")
     public List<Long> findOrdersWithDifferentCategories() {
         return orderService.findOrderIdsWithProductsInDifferentCategoriescri();
     }
 
+    @GetMapping("/category-prices")
+    public List<Object[]> getCategoryTotalPrices() {
+        return orderService.getCategoryTotalPrices();
+    }
+    @GetMapping("/category-total-criteria")
+    public List<Object[]> getCategoryTotalPricescri() {
+        return orderService.getCategoryTotalPrices();
+    }
 }

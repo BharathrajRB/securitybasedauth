@@ -15,6 +15,7 @@ import com.example.security.securitybasedauth.Dto.OrderItemDTO;
 import com.example.security.securitybasedauth.Entity.OrderItem;
 import com.example.security.securitybasedauth.Entity.Orders;
 import com.example.security.securitybasedauth.Entity.User;
+import com.example.security.securitybasedauth.Repository.CategoryRepository;
 import com.example.security.securitybasedauth.Repository.OrderRepository;
 import com.example.security.securitybasedauth.Repository.OrderRepositoryCustom;
 
@@ -23,6 +24,8 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private OrderRepositoryCustom orderRepositoryCustom;
@@ -83,11 +86,19 @@ public class OrderService {
     }
 
     // public List<Long> findOrderIdsWithProductsInDifferentCategoriescri() {
-    //     return orderRepositoryCustom.findOrderIdsWithProductsInDifferentCategoriesCriteria();
+    // return
+    // orderRepositoryCustom.findOrderIdsWithProductsInDifferentCategoriesCriteria();
     // }
 
     public List<Long> findOrderIdsWithProductsInDifferentCategoriescri() {
         return orderRepositoryCustom.findOrderIdsWithProductsInDifferentCategoriescri();
     }
 
+    public List<Object[]> getCategoryTotalPrices() {
+        return categoryRepository.getCategoryTotalPrices();
+    }
+
+    public List<Object[]> getCategoryTotalPricescri() {
+        return orderRepositoryCustom.getCategoryTotalPricescri();
+    }
 }
