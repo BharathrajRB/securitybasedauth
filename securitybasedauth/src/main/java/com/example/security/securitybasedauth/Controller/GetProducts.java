@@ -51,4 +51,5 @@ public class GetProducts {
         List<Object[]> result = productservice.getTotalQuantityPerProductcri();
         return ResponseEntity.ok(result);
     }
+
 }

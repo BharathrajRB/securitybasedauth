@@ -23,4 +23,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY product_name " +
             "ORDER BY product_name")
     List<Object[]> getTotalQuantityPerProduct();
+
 }

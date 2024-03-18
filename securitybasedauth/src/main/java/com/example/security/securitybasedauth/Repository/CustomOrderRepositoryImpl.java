@@ -31,27 +31,23 @@ public class CustomOrderRepositoryImpl implements OrderRepositoryCustom {
      * "GROUP BY order_id " +
      * "HAVING count > 1
      * 
+     * //
      */
+
     @Override
-
     public List<Long> findOrderIdsWithProductsInDifferentCategoriescri() {
-
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
 
         Root<OrderItem> orderItemRoot = query.from(OrderItem.class);
-        Join<OrderItem, Product> productJoin = orderItemRoot.join("product",
-                JoinType.INNER);
+        Join<OrderItem, Product> productJoin = orderItemRoot.join("product", JoinType.INNER);
+        Join<Product, Category> categoryJoin = productJoin.join("categoryid", JoinType.INNER); // Change this line
 
-        Path<Long> orderIdPath = orderItemRoot.get("order").get("id");
-        Path<Long> categoryIdPath = productJoin.get("categoryid").get("id");
-
-        query.select(orderIdPath);
-        query.groupBy(orderIdPath);
-        query.having(cb.gt(cb.countDistinct(categoryIdPath), 1));
+        query.select(orderItemRoot.get("order").get("id"));
+        query.groupBy(orderItemRoot.get("order").get("id"));
+        query.having(cb.gt(cb.countDistinct(categoryJoin.get("id")), 1)); // Update the path here as well
 
         return entityManager.createQuery(query).getResultList();
-
     }
 
     @Override
@@ -60,7 +56,7 @@ public class CustomOrderRepositoryImpl implements OrderRepositoryCustom {
         CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
         Root<OrderItem> orderItemRoot = query.from(OrderItem.class);
         Join<OrderItem, Product> productJoin = orderItemRoot.join("product");
-        Join<Product, Category> categoryJoin = productJoin.join("category");
+        Join<Product, Category> categoryJoin = productJoin.join("categoryid");
 
         query.multiselect(categoryJoin.get("name"),
                 cb.sum(cb.prod(orderItemRoot.get("price"), orderItemRoot.get("quantity"))));

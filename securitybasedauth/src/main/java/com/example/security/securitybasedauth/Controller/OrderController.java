@@ -3,7 +3,6 @@ package com.example.security.securitybasedauth.Controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.security.securitybasedauth.Dto.OrderDTO;
 import com.example.security.securitybasedauth.Dto.OrderDetailsDTO;
-import com.example.security.securitybasedauth.Entity.Orders;
 import com.example.security.securitybasedauth.Entity.User;
 import com.example.security.securitybasedauth.Repository.OrderRepository;
 import com.example.security.securitybasedauth.Repository.UserRepository;
@@ -93,7 +91,7 @@ public class OrderController {
     }
     @GetMapping("/category-total-criteria")
     public List<Object[]> getCategoryTotalPricescri() {
-        return orderService.getCategoryTotalPrices();
+        return orderService.getCategoryTotalPricescri();
     }
 
 }

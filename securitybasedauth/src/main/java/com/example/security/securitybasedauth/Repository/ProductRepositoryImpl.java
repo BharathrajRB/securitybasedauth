@@ -1,8 +1,11 @@
 package com.example.security.securitybasedauth.Repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
@@ -19,21 +22,20 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public List<Object[]> getTotalQuantityPerProduct() {
+    public List<Object[]> getTotalQuantityPerProductcri() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Product> productRoot = criteriaQuery.from(Product.class);
+        Join<Product, OrderItem> orderItemJoin = productRoot.join("orderItems");
 
-        Root<Product> productRoot = query.from(Product.class);
-        Root<OrderItem> orderItemRoot = query.from(OrderItem.class);
-        
-        query.multiselect(
-                productRoot.get("name").alias("product_name"),
-                cb.sum(orderItemRoot.get("quantity")).alias("total_quantity"));
-        query.where(cb.equal(orderItemRoot.get("product"), productRoot.get("id")));
-        query.groupBy(productRoot.get("name"));
-        query.orderBy(cb.asc(productRoot.get("name")));
+        criteriaQuery.multiselect(
+                productRoot.get("name"),
+                criteriaBuilder.sum(orderItemJoin.get("quantity")));
+        criteriaQuery.groupBy(productRoot.get("name"));
+        criteriaQuery.orderBy(criteriaBuilder.asc(productRoot.get("name")));
 
-        return entityManager.createQuery(query).getResultList();
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
+
 }

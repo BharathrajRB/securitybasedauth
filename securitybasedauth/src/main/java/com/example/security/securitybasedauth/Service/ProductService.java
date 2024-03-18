@@ -15,12 +15,15 @@ import org.springframework.stereotype.Service;
 import com.example.security.securitybasedauth.Controller.UnAuthorizeException;
 import com.example.security.securitybasedauth.Entity.Product;
 import com.example.security.securitybasedauth.Repository.ProductRepository;
+import com.example.security.securitybasedauth.Repository.ProductRepositoryCustom;
 
 @Service
 public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductRepositoryCustom productRepositoryCustom;
 
     public ResponseEntity<?> createProduct(Product product) {
         try {
@@ -114,6 +117,6 @@ public class ProductService {
     }
 
     public List<Object[]> getTotalQuantityPerProductcri() {
-        return productRepository.getTotalQuantityPerProduct();
+        return productRepositoryCustom.getTotalQuantityPerProductcri();
     }
 }
