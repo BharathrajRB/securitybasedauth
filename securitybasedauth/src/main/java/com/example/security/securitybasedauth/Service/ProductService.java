@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import com.example.security.securitybasedauth.Controller.UnAuthorizeException;
 import com.example.security.securitybasedauth.Entity.Product;
 import com.example.security.securitybasedauth.Repository.ProductRepository;
@@ -118,5 +119,10 @@ public class ProductService {
 
     public List<Object[]> getTotalQuantityPerProductcri() {
         return productRepositoryCustom.getTotalQuantityPerProductcri();
+    }
+
+    public Page<Product> getPaginatedProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
     }
 }

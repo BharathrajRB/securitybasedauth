@@ -31,7 +31,7 @@ public class CustomOrderRepositoryImpl implements OrderRepositoryCustom {
      * "GROUP BY order_id " +
      * "HAVING count > 1
      * 
-     * //
+     *
      */
 
     @Override
@@ -41,11 +41,11 @@ public class CustomOrderRepositoryImpl implements OrderRepositoryCustom {
 
         Root<OrderItem> orderItemRoot = query.from(OrderItem.class);
         Join<OrderItem, Product> productJoin = orderItemRoot.join("product", JoinType.INNER);
-        Join<Product, Category> categoryJoin = productJoin.join("categoryid", JoinType.INNER); // Change this line
+        Join<Product, Category> categoryJoin = productJoin.join("categoryid", JoinType.INNER); 
 
         query.select(orderItemRoot.get("order").get("id"));
         query.groupBy(orderItemRoot.get("order").get("id"));
-        query.having(cb.gt(cb.countDistinct(categoryJoin.get("id")), 1)); // Update the path here as well
+        query.having(cb.gt(cb.countDistinct(categoryJoin.get("id")), 1)); 
 
         return entityManager.createQuery(query).getResultList();
     }

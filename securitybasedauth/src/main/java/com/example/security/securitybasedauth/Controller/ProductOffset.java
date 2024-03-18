@@ -26,4 +26,10 @@ public class ProductOffset {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/products-pagination")
+    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+        return productService.getPaginatedProducts(page, size);
+    }
+
 }
